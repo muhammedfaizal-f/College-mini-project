@@ -1,0 +1,443 @@
+ @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
+
+ .wcu-root {
+     background: #0B1437;
+     padding: 100px 0 90px;
+     position: relative;
+     overflow: hidden;
+     font-family: 'DM Sans', sans-serif;
+ }
+
+ .wcu-root::before {
+     content: '';
+     position: absolute;
+     top: 0;
+     left: 50%;
+     transform: translateX(-50%);
+     width: 600px;
+     height: 1px;
+     background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.3), transparent);
+ }
+
+ /* blobs */
+ .wcu-blob {
+     position: absolute;
+     border-radius: 50%;
+     pointer-events: none;
+     filter: blur(110px);
+ }
+
+ .wcu-blob-1 {
+     width: 450px;
+     height: 450px;
+     background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
+     top: -80px;
+     right: -80px;
+ }
+
+ .wcu-blob-2 {
+     width: 400px;
+     height: 400px;
+     background: radial-gradient(circle, rgba(255, 107, 53, 0.07) 0%, transparent 70%);
+     bottom: -60px;
+     left: -60px;
+ }
+
+ /* big decorative text */
+ .wcu-bg-text {
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     font-family: 'Syne', sans-serif;
+     font-size: 220px;
+     font-weight: 800;
+     color: rgba(255, 255, 255, 0.015);
+     white-space: nowrap;
+     pointer-events: none;
+     user-select: none;
+     letter-spacing: -8px;
+ }
+
+ .wcu-inner {
+     max-width: 1200px;
+     margin: 0 auto;
+     padding: 0 2rem;
+     position: relative;
+     z-index: 2;
+ }
+
+ /* Header */
+ .wcu-header {
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     gap: 40px;
+     align-items: end;
+     margin-bottom: 64px;
+ }
+
+ .wcu-eyebrow {
+     display: flex;
+     align-items: center;
+     gap: 8px;
+     margin-bottom: 14px;
+ }
+
+ .wcu-eyebrow-line {
+     width: 24px;
+     height: 2px;
+     background: #10B981;
+     border-radius: 2px;
+ }
+
+ .wcu-eyebrow-text {
+     font-size: 12px;
+     font-weight: 500;
+     color: #10B981;
+     letter-spacing: 0.1em;
+     text-transform: uppercase;
+ }
+
+ .wcu-title {
+     font-family: 'Syne', sans-serif;
+     font-size: clamp(28px, 3.8vw, 44px);
+     font-weight: 800;
+     color: white;
+     letter-spacing: -1.2px;
+     line-height: 1.1;
+ }
+
+ .wcu-title span {
+     color: #10B981;
+ }
+
+ .wcu-header-right {
+     display: flex;
+     flex-direction: column;
+     gap: 20px;
+     align-items: flex-end;
+ }
+
+ .wcu-subtitle {
+     font-size: 15px;
+     color: rgba(255, 255, 255, 0.38);
+     line-height: 1.75;
+     text-align: right;
+     max-width: 380px;
+ }
+
+ /* trust badges row */
+ .wcu-trust {
+     display: flex;
+     gap: 8px;
+     flex-wrap: wrap;
+     justify-content: flex-end;
+ }
+
+ .trust-badge {
+     display: flex;
+     align-items: center;
+     gap: 6px;
+     background: rgba(255, 255, 255, 0.04);
+     border: 0.5px solid rgba(255, 255, 255, 0.08);
+     border-radius: 999px;
+     padding: 6px 14px;
+     font-size: 12px;
+     color: rgba(255, 255, 255, 0.45);
+     white-space: nowrap;
+     transition: all 0.2s;
+     cursor: default;
+ }
+
+ .trust-badge:hover {
+     color: rgba(255, 255, 255, 0.7);
+     border-color: rgba(255, 255, 255, 0.15);
+     background: rgba(255, 255, 255, 0.06);
+ }
+
+ /* Features grid */
+ .wcu-grid {
+     display: grid;
+     grid-template-columns: repeat(3, 1fr);
+     gap: 14px;
+ }
+
+ /* Feature card */
+ .feat-card {
+     background: rgba(255, 255, 255, 0.025);
+     border: 0.5px solid rgba(255, 255, 255, 0.07);
+     border-radius: 20px;
+     padding: 28px 24px 24px;
+     cursor: pointer;
+     transition: all 0.3s ease;
+     position: relative;
+     overflow: hidden;
+     display: flex;
+     flex-direction: column;
+     gap: 16px;
+ }
+
+ /* corner glow */
+ .feat-card::after {
+     content: '';
+     position: absolute;
+     top: -40px;
+     right: -40px;
+     width: 120px;
+     height: 120px;
+     border-radius: 50%;
+     filter: blur(40px);
+     opacity: 0;
+     transition: opacity 0.4s ease;
+     pointer-events: none;
+ }
+
+ .feat-card.hov {
+     transform: translateY(-5px);
+     border-color: rgba(255, 255, 255, 0.13);
+ }
+
+ .feat-card.hov::after {
+     opacity: 1;
+ }
+
+ .feat-top {
+     display: flex;
+     justify-content: space-between;
+     align-items: flex-start;
+ }
+
+ .feat-icon {
+     width: 50px;
+     height: 50px;
+     border-radius: 14px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     transition: all 0.3s;
+     flex-shrink: 0;
+ }
+
+ .feat-icon svg {
+     width: 22px;
+     height: 22px;
+     transition: transform 0.3s;
+ }
+
+ .feat-card.hov .feat-icon svg {
+     transform: scale(1.12);
+ }
+
+ .feat-stat-box {
+     text-align: right;
+ }
+
+ .feat-stat {
+     font-family: 'Syne', sans-serif;
+     font-size: 22px;
+     font-weight: 800;
+     line-height: 1;
+     transition: color 0.3s;
+ }
+
+ .feat-stat-label {
+     font-size: 10.5px;
+     color: rgba(255, 255, 255, 0.28);
+     margin-top: 2px;
+     letter-spacing: 0.02em;
+ }
+
+ /* .feat-body {} */
+
+ .feat-title {
+     font-family: 'Syne', sans-serif;
+     font-size: 16px;
+     font-weight: 700;
+     color: white;
+     letter-spacing: -0.3px;
+     margin-bottom: 8px;
+ }
+
+ .feat-desc {
+     font-size: 13px;
+     color: rgba(255, 255, 255, 0.38);
+     line-height: 1.65;
+     transition: color 0.3s;
+ }
+
+ .feat-card.hov .feat-desc {
+     color: rgba(255, 255, 255, 0.52);
+ }
+
+ /* learn more link */
+ .feat-link {
+     display: inline-flex;
+     align-items: center;
+     gap: 5px;
+     font-size: 12.5px;
+     font-weight: 500;
+     text-decoration: none;
+     opacity: 0;
+     transform: translateY(4px);
+     transition: all 0.25s ease;
+     cursor: pointer;
+     background: none;
+     border: none;
+     padding: 0;
+     font-family: 'DM Sans', sans-serif;
+ }
+
+ .feat-link svg {
+     width: 12px;
+     height: 12px;
+     stroke: currentColor;
+     fill: none;
+     stroke-width: 2.5;
+     transition: transform 0.2s;
+ }
+
+ .feat-link:hover svg {
+     transform: translateX(3px);
+ }
+
+ .feat-card.hov .feat-link {
+     opacity: 1;
+     transform: translateY(0);
+ }
+
+ /* bottom comparison strip */
+ .wcu-compare {
+     margin-top: 56px;
+     background: rgba(255, 255, 255, 0.025);
+     border: 0.5px solid rgba(255, 255, 255, 0.07);
+     border-radius: 20px;
+     padding: 28px 32px;
+     display: grid;
+     grid-template-columns: 1fr auto 1fr;
+     gap: 28px;
+     align-items: center;
+ }
+
+ .compare-col {
+     display: flex;
+     flex-direction: column;
+     gap: 12px;
+ }
+
+ .compare-col.right {
+     align-items: flex-end;
+ }
+
+ .compare-heading {
+     font-family: 'Syne', sans-serif;
+     font-size: 14px;
+     font-weight: 700;
+     padding: 5px 14px;
+     border-radius: 999px;
+     width: fit-content;
+ }
+
+ .compare-heading.bad {
+     background: rgba(239, 68, 68, 0.1);
+     color: #F87171;
+     border: 0.5px solid rgba(239, 68, 68, 0.2);
+ }
+
+ .compare-heading.good {
+     background: rgba(16, 185, 129, 0.1);
+     color: #34D399;
+     border: 0.5px solid rgba(16, 185, 129, 0.2);
+ }
+
+ .compare-col.right .compare-heading {
+     align-self: flex-end;
+ }
+
+ .compare-row {
+     display: flex;
+     align-items: center;
+     gap: 8px;
+     font-size: 13px;
+     color: rgba(255, 255, 255, 0.45);
+ }
+
+ .compare-row svg {
+     width: 15px;
+     height: 15px;
+     fill: none;
+     stroke-width: 2.5;
+     flex-shrink: 0;
+ }
+
+ .compare-col.right .compare-row {
+     flex-direction: row-reverse;
+ }
+
+ .compare-vs {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     width: 44px;
+     height: 44px;
+     border-radius: 50%;
+     background: rgba(255, 255, 255, 0.04);
+     border: 0.5px solid rgba(255, 255, 255, 0.08);
+     font-family: 'Syne', sans-serif;
+     font-size: 13px;
+     font-weight: 700;
+     color: rgba(255, 255, 255, 0.3);
+     justify-self: center;
+     align-self: center;
+ }
+
+ @media (max-width: 960px) {
+     .wcu-grid {
+         grid-template-columns: repeat(2, 1fr);
+     }
+
+     .wcu-header {
+         grid-template-columns: 1fr;
+     }
+
+     .wcu-header-right {
+         align-items: flex-start;
+     }
+
+     .wcu-subtitle {
+         text-align: left;
+     }
+
+     .wcu-trust {
+         justify-content: flex-start;
+     }
+
+     .wcu-compare {
+         grid-template-columns: 1fr;
+     }
+
+     .compare-vs {
+         display: none;
+     }
+
+     .compare-col.right {
+         align-items: flex-start;
+     }
+
+     .compare-col.right .compare-row {
+         flex-direction: row;
+     }
+
+     .compare-col.right .compare-heading {
+         align-self: flex-start;
+     }
+ }
+
+ @media (max-width: 580px) {
+     .wcu-grid {
+         grid-template-columns: 1fr;
+     }
+
+     .feat-card {
+         padding: 22px 18px 20px;
+     }
+ }
