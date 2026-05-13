@@ -208,7 +208,7 @@ const Footer = () => {
         <div className="ft-bottom">
           <div className="ft-bottom-inner">
             <div className="ft-copy">
-              © 2025 <span>ServeNow</span>. All rights reserved.
+              © 2026 <span>ServeNow</span>. All rights reserved.
             </div>
             <div className="ft-bottom-links">
               {["Privacy Policy", "Terms of Use", "Cookie Policy", "Sitemap"].map((l, i) => (
