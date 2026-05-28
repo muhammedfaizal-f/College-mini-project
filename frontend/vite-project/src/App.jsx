@@ -35,7 +35,7 @@ function App() {
           <Route path="/join-provider" element={<JoinProvider />} />
           <Route path="/providers" element={<ExploreProviders />} />
           <Route path="/search" element={<LocationSearch />} />
-          <Route path="/services" element={
+          <Route path="/book/:id" element={
             <ProtectedRoute><BookNow /></ProtectedRoute>
           } />
           <Route path="*" element={<Navigate to="/" replace />} />

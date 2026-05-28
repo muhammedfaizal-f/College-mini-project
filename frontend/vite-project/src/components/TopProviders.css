@@ -18,7 +18,9 @@
        height: 1px;
        background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.3), transparent);
    }
-
+   .pro{
+    text-decoration: none;
+   }
    .tp-blob {
        position: absolute;
        border-radius: 50%;
@@ -575,6 +577,7 @@
    .explore {
        text-decoration: none;
    }
+
 
    .btn-explore-all {
        display: flex;

@@ -275,7 +275,7 @@ const HowItWorks = () => {
           {/* CTA */}
           <div className="hiw-cta">
             <p className="hiw-cta-text">Ready to get started? It only takes 2 minutes.</p>
-            <Link to={"/book/:id"} >
+            <Link to={"/providers"} >
             <button className="hiw-cta-btn">
               Book Your First Service
               <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>

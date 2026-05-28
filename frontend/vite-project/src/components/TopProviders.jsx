@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import './TopProviders.css'
 import { Link } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 
 const providers = [
     {
@@ -141,6 +141,7 @@ const StarRating = ({ rating, color }) => {
 };
 
 const TopProviders = () => {
+    const navigate = useNavigate();
     const [activeCategory, setActiveCategory] = useState("All");
     const [hovered, setHovered] = useState(null);
     const [booked, setBooked] = useState(null);
@@ -174,10 +175,12 @@ const TopProviders = () => {
                                 <span className="tp-live-dot" />
                                 <span>486 providers active right now</span>
                             </div>
-                            <button className="tp-view-all">
-                                View all providers
-                                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-                            </button>
+                            <Link to="/providers" className='pro'>
+                                <button className="tp-view-all">
+                                    View all providers
+                                    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                                </button>
+                            </Link>
                         </div>
                     </div>
 
@@ -318,18 +321,27 @@ const TopProviders = () => {
                                         <button className="btn-chat" title="Message provider">
                                             <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" /></svg>
                                         </button>
+                                        
                                         <button
+
+                                            type="button"
                                             className={`btn-book-prov ${booked === i ? "confirmed" : ""}`}
-                                            onClick={() => handleBook(i)}
+                                            onClick={() => {
+                                                handleBook(i);
+
+                                                navigate("/book/:id", {
+                                                    state: {
+                                                        provider: p
+                                                    }
+                                                });
+                                            }}
                                             style={{
                                                 background: booked === i ? undefined : p.color,
                                                 color: "white",
-                                                boxShadow: hovered === i && booked !== i ? `0 4px 16px ${p.color}40` : undefined,
                                             }}
                                         >
                                             {booked === i ? (
                                                 <>
-                                                    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>
                                                     Booking Sent!
                                                 </>
                                             ) : (
@@ -352,15 +364,15 @@ const TopProviders = () => {
                             <div className="tp-bottom-sub">Join 500+ providers earning on ServeNow. Set your own hours & rates.</div>
                         </div>
                         <div className="tp-bottom-btns">
-                            <Link to={"/join-provider"} className='join'> 
-                            <button className="btn-provider-join">
-                                Join as Provider →
-                            </button>
+                            <Link to={"/join-provider"} className='join'>
+                                <button className="btn-provider-join">
+                                    Join as Provider →
+                                </button>
                             </Link>
-                            <Link to={"/providers"} className='explore'> 
-                            <button className="btn-explore-all">
-                                Explore All Providers
-                            </button>
+                            <Link to={"/providers"} className='explore'>
+                                <button className="btn-explore-all">
+                                    Explore All Providers
+                                </button>
                             </Link>
                         </div>
                     </div>

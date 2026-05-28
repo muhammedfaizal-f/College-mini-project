@@ -100,8 +100,16 @@ export default function UserProfile() {
                     </button>
                     <span className="up-nav-title" style={{ color: "rgba(255,255,255,.3)" }}>/ My Profile</span>
                     <div className="up-nav-right">
-                        <button className="up-logout" onClick={() => navigate("/login")}>
-                            <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" /></svg>
+                        <button
+                            className="up-logout"
+                            onClick={() => {
+                                logout();
+                                navigate("/login");
+                            }}
+                        >
+                            <svg viewBox="0 0 24 24">
+                                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+                            </svg>
                             Sign Out
                         </button>
                     </div>

@@ -49,25 +49,27 @@ const Navbar = () => {
           {isLoggedIn ? (
             <div className="profile-menu">
               <Link to="/profile" className="profile-link">
+
                 <div className="profile-avatar">
-                  {user?.name?.charAt(0).toUpperCase()}
+
+                  <img
+                    src={user?.avatar || "/profile-picture.png"}
+                    alt="profile"
+                    className="profile-img"
+                  />
+
                 </div>
 
-                <span className="profile-name">
-                  {user?.name}
-                </span>
               </Link>
 
-              <button className="btn-login" onClick={logout}>
-                Logout
-              </button>
+              
             </div>
           ) : (
             <Link to={"/login"}>
               <button className="btn-login">Log In</button>
             </Link>
           )}
-          <Link to={"/services"} className='link'>
+          <Link to={"/providers"} className='link'>
             <button className="btn-book">
               <svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
               Book Now

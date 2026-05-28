@@ -99,13 +99,13 @@ export default function ExploreProviders() {
 
   useEffect(() => { fetchProviders(); }, [fetchProviders]);
 
-  const handleBook = (p) => {
-    setBooked(p._id);
-    setTimeout(() => {
-      navigate(`/book/${p._id}`);
-    }, 600);
-  };
-
+ const handleBook = (provider) => {
+  navigate(`/book/${provider._id}`, {
+  state: {
+    provider: provider
+  }
+});
+};
 
   return (
     <>
@@ -239,8 +239,20 @@ export default function ExploreProviders() {
                         <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" /></svg>
                       </button>
                       <button
+                        type="button"
                         className={`btn-bk ${booked === p._id ? "ok" : ""}`}
-                        style={booked !== p._id ? { background: p.color, color: "white", boxShadow: hovered === p._id ? `0 4px 14px ${p.color}40` : "none" } : {}}
+                        style={
+                          booked !== p._id
+                            ? {
+                              background: p.color,
+                              color: "white",
+                              boxShadow:
+                                hovered === p._id
+                                  ? `0 4px 14px ${p.color}40`
+                                  : "none"
+                            }
+                            : {}
+                        }
                         onClick={() => handleBook(p)}
                       >
                         {booked === p._id
