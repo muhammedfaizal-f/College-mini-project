@@ -36,11 +36,32 @@ const Navbar = () => {
 
         {/* Desktop Nav Links */}
         <ul className="nav-links">
-          {navLinks.map((link, i) => (
-            <li key={i}>
-              <a href="#" className={i === 0 ? "active" : ""}>{link}</a>
-            </li>
-          ))}
+
+          {/* Home */}
+          <li>
+            <a href="#home">Home</a>
+          </li>
+
+          <li>
+            <Link to="/providers" className="nav-link-item">
+              Services
+            </Link>
+          </li>
+
+          <li>
+           <Link to="/Howitworks">
+            How It Works
+           </Link>
+              
+           
+          </li>
+
+          <li>
+            <a href="#WhyChooseUs" className="nav-link-item">
+              About
+            </a>
+          </li>
+
         </ul>
 
         {/* Desktop Right Buttons */}
@@ -62,7 +83,7 @@ const Navbar = () => {
 
               </Link>
 
-              
+
             </div>
           ) : (
             <Link to={"/login"}>

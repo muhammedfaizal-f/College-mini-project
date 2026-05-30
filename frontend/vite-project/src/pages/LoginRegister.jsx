@@ -3,6 +3,13 @@ import './LoginRegister.css'
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { signInWithPopup } from "firebase/auth";
+import {
+  auth,
+  googleProvider,
+  setupRecaptcha,
+  signInWithPhoneNumber
+} from "../firebase";
 
 
 
@@ -26,6 +33,59 @@ export default function LoginRegister() {
   const [success, setSuccess] = useState("");
   const [show, setShow] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", password: "", phone: "", role: "user" });
+  const [phone, setPhone] = useState("");
+  const [otp, setOtp] = useState("");
+  const [confirmObj, setConfirmObj] = useState(null);
+
+  const sendOtp = async () => {
+
+    try {
+
+      const appVerifier = setupRecaptcha();
+
+      const confirmationResult =
+        await signInWithPhoneNumber(
+          auth,
+          phone,
+          appVerifier
+        );
+
+      window.confirmationResult = confirmationResult;
+
+      alert("OTP Sent");
+
+    } catch (err) {
+
+      console.log(err);
+
+      alert("OTP Failed");
+    }
+  };
+
+  const verifyOtp = async () => {
+
+    try {
+
+      await window.confirmationResult.confirm(otp);
+
+      alert("Login Success");
+
+      // clear fields
+      setPhone("");
+      setOtp("");
+
+      // clear confirmation
+      window.confirmationResult = null;
+
+    } catch (err) {
+
+      console.log(err);
+
+      alert("Invalid OTP");
+    }
+  };
+
+
 
   useEffect(() => { setTimeout(() => setShow(true), 80); }, []);
 
@@ -65,6 +125,36 @@ export default function LoginRegister() {
       setError(err?.response?.data?.message || "Something went wrong. Try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+
+      const user = result.user;
+
+      // save user
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          name: user.displayName,
+          email: user.email,
+          avatar: user.photoURL,
+        })
+      );
+
+      alert("Google Login Success");
+
+      // go home page
+      navigate("/");
+
+      // refresh app
+      window.location.reload();
+
+    } catch (err) {
+      console.log(err);
+      alert("Google Login Failed");
     }
   };
 
@@ -148,9 +238,46 @@ export default function LoginRegister() {
             </button>
 
             <div className="div-row"><div className="div-line" /><span className="div-t">or continue with</span><div className="div-line" /></div>
-            <div className="soc-row">
-              <button className="soc">🇬 Google</button>
-              <button className="soc">📱 Phone OTP</button>
+            <div className="social-auth">
+
+              {/* GOOGLE BUTTON */}
+              <button
+                className="google-btn"
+                onClick={handleGoogleLogin}
+              >
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
+                  alt="google"
+                />
+                Continue with Google
+              </button>
+
+              {/* PHONE OTP */}
+              <div className="otp-box">
+
+                <input
+                  type="text"
+                  placeholder="+91 Enter phone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+
+                <button onClick={sendOtp}>
+                  Send OTP
+                </button>
+
+                <input
+                  type="text"
+                  placeholder="Enter OTP"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                />
+
+                <button onClick={verifyOtp}>
+                  Verify OTP
+                </button>
+
+              </div>
             </div>
 
             <div className="foot">
@@ -159,6 +286,7 @@ export default function LoginRegister() {
           </div>
         </div>
       </div>
+      <div id="recaptcha-container"></div>
     </>
   );
 }

@@ -54,7 +54,7 @@ const home = () => {
 
   return (
     <>
-      <section className="hero-root">
+      <section id="home" className="hero-root">
         <div className="blob blob-1" />
         <div className="blob blob-2" />
         <div className="blob blob-3" />
@@ -225,8 +225,25 @@ const home = () => {
 
           </div>
         </div>
+
+      </section>
+      <section id="services">
+
+        {/* Services Content */}
+
       </section>
 
+      <section id="Howitworks">
+
+        {/* How It Works Content */}
+
+      </section>
+
+      <section id="WhyChooseUs">
+
+        {/* Why Choose Us Content */}
+
+      </section>
     </>
   )
 }
