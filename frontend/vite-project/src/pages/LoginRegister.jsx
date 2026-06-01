@@ -21,7 +21,12 @@ const ROLES = [
 export default function LoginRegister() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { login, register, isLoggedIn } = useAuth();
+  const {
+    login,
+    register,
+    googleLogin,
+    isLoggedIn
+  } = useAuth();
 
   // If already logged in → go home
   useEffect(() => { if (isLoggedIn) navigate("/"); }, [isLoggedIn]);
@@ -63,27 +68,34 @@ export default function LoginRegister() {
   };
 
   const verifyOtp = async () => {
+  try {
+    const result = await window.confirmationResult.confirm(otp);
 
-    try {
+    const otpUser = {
+      name: result.user.phoneNumber,
+      phone: result.user.phoneNumber,
+      email: "",
+      avatar: "",
+      role: "user",
+    };
 
-      await window.confirmationResult.confirm(otp);
+    localStorage.setItem("user", JSON.stringify(otpUser));
+    localStorage.setItem("token", result.user.uid);
 
-      alert("Login Success");
+    alert("Login Success");
 
-      // clear fields
-      setPhone("");
-      setOtp("");
+    setPhone("");
+    setOtp("");
 
-      // clear confirmation
-      window.confirmationResult = null;
+    window.confirmationResult = null;
 
-    } catch (err) {
+    navigate("/profile");
 
-      console.log(err);
-
-      alert("Invalid OTP");
-    }
-  };
+  } catch (err) {
+    console.log(err);
+    alert("Invalid OTP");
+  }
+};
 
 
 
@@ -132,25 +144,18 @@ export default function LoginRegister() {
     try {
       const result = await signInWithPopup(auth, googleProvider);
 
-      const user = result.user;
+      const gUser = {
+        name: result.user.displayName,
+        email: result.user.email,
+        avatar: result.user.photoURL,
+        role: "user",
+      };
 
-      // save user
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          name: user.displayName,
-          email: user.email,
-          avatar: user.photoURL,
-        })
-      );
+      googleLogin(gUser);
 
       alert("Google Login Success");
 
-      // go home page
       navigate("/");
-
-      // refresh app
-      window.location.reload();
 
     } catch (err) {
       console.log(err);

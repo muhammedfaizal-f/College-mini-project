@@ -8,13 +8,13 @@ import { authAPI } from "../api/services";
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user,    setUser]    = useState(null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true); // true on first load
 
   // ── On app start: restore user from localStorage ──────────────────────────
   useEffect(() => {
     const stored = localStorage.getItem("user");
-    const token  = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     if (stored && token) {
       setUser(JSON.parse(stored));
     }
@@ -25,7 +25,7 @@ export function AuthProvider({ children }) {
   const login = async (email, password) => {
     const res = await authAPI.login(email, password);
     localStorage.setItem("token", res.data.token);
-    localStorage.setItem("user",  JSON.stringify(res.data.user));
+    localStorage.setItem("user", JSON.stringify(res.data.user));
     setUser(res.data.user);
     return res.data;
   };
@@ -34,9 +34,18 @@ export function AuthProvider({ children }) {
   const register = async (formData) => {
     const res = await authAPI.register(formData);
     localStorage.setItem("token", res.data.token);
-    localStorage.setItem("user",  JSON.stringify(res.data.user));
+    localStorage.setItem("user", JSON.stringify(res.data.user));
     setUser(res.data.user);
     return res.data;
+  };
+
+  const googleLogin = (googleUser) => {
+    localStorage.setItem(
+      "user",
+      JSON.stringify(googleUser)
+    );
+
+    setUser(googleUser);
   };
 
   // ── Logout ────────────────────────────────────────────────────────────────
@@ -53,16 +62,25 @@ export function AuthProvider({ children }) {
     localStorage.setItem("user", JSON.stringify(updatedUser));
   };
 
-  const isLoggedIn  = !!user;
-  const isProvider  = user?.role === "provider";
-  const isAdmin     = user?.role === "admin";
+  const isLoggedIn = !!user;
+  const isProvider = user?.role === "provider";
+  const isAdmin = user?.role === "admin";
 
   return (
-    <AuthContext.Provider value={{
-      user, loading,
-      isLoggedIn, isProvider, isAdmin,
-      login, register, logout, updateUser,
-    }}>
+   <AuthContext.Provider
+  value={{
+    user,
+    loading,
+    isLoggedIn,
+    isProvider,
+    isAdmin,
+    login,
+    register,
+    googleLogin,
+    logout,
+    updateUser,
+  }}
+>
       {children}
     </AuthContext.Provider>
   );

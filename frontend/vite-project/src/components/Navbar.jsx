@@ -19,7 +19,7 @@ const Navbar = () => {
   const navLinks = ["Home", "Services", "How It Works", "About"];
 
 
-
+  console.log(user);
   return (
     <>
 
@@ -55,7 +55,7 @@ const Navbar = () => {
           </li>
 
           <li>
-           <a href="#whychooseus">About</a>
+            <a href="#whychooseus">About</a>
           </li>
 
         </ul>
@@ -73,6 +73,9 @@ const Navbar = () => {
                     src={user?.avatar || "/profile-picture.png"}
                     alt="profile"
                     className="profile-img"
+                    onError={(e) => {
+                      e.target.src = "/profile-picture.png";
+                    }}
                   />
 
                 </div>
@@ -106,13 +109,35 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
-        {navLinks.map((link, i) => (
-          <a key={i} href="#" onClick={() => setMenuOpen(false)}>{link}</a>
-        ))}
+        <a href="#home" onClick={() => setMenuOpen(false)}>Home</a>
+
+        <Link to="/providers" onClick={() => setMenuOpen(false)}>
+          Services
+        </Link>
+
+        <a href="#howitworks" onClick={() => setMenuOpen(false)}>
+          How It Works
+        </a>
+
+        <a href="#whychooseus" onClick={() => setMenuOpen(false)}>
+          About
+        </a>
+
         <div className="mobile-menu-divider" />
-        <button className="btn-book" onClick={() => setMenuOpen(false)}>
-          Book a Service
-        </button>
+
+        {isLoggedIn ? (
+          <Link to="/profile" onClick={() => setMenuOpen(false)}>
+            My Profile
+          </Link>
+        ) : (
+          <Link to="/login" onClick={() => setMenuOpen(false)}>
+            Login
+          </Link>
+        )}
+
+        <Link to="/providers" onClick={() => setMenuOpen(false)}>
+          <button className="btn-book">Book a Service</button>
+        </Link>
       </div>
 
       {/* Demo background so navbar is visible */}
