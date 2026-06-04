@@ -11,8 +11,6 @@ import {
   signInWithPhoneNumber
 } from "../firebase";
 
-
-
 const ROLES = [
   { value: "user", label: "Customer", icon: "👤", desc: "Book services" },
   { value: "provider", label: "Provider", icon: "🔧", desc: "Offer services" },
@@ -25,11 +23,20 @@ export default function LoginRegister() {
     login,
     register,
     googleLogin,
-    isLoggedIn
+    isLoggedIn,
+    user
   } = useAuth();
 
-  // If already logged in → go home
-  useEffect(() => { if (isLoggedIn) navigate("/"); }, [isLoggedIn]);
+  // If already logged in → redirect based on role
+  useEffect(() => {
+    if (isLoggedIn && user) {
+      if (user.role === "provider") {
+        navigate("/provider-profile");
+      } else {
+        navigate("/profile");
+      }
+    }
+  }, [isLoggedIn, user, navigate]);
 
   // Start on register tab if URL is /register
   const [mode, setMode] = useState(location.pathname === "/register" ? "register" : "login");
@@ -45,27 +52,14 @@ export default function LoginRegister() {
   const [otpSent, setOtpSent] = useState(false);
 
   const sendOtp = async () => {
-
     try {
-
       const appVerifier = setupRecaptcha();
-
-      const confirmationResult =
-        await signInWithPhoneNumber(
-          auth,
-          phone,
-          appVerifier
-        );
-
+      const confirmationResult = await signInWithPhoneNumber(auth, phone, appVerifier);
       window.confirmationResult = confirmationResult;
-
       setOtpSent(true);
       alert("OTP Sent");
-
     } catch (err) {
-
       console.log(err);
-
       alert("OTP Failed");
     }
   };
@@ -73,7 +67,6 @@ export default function LoginRegister() {
   const verifyOtp = async () => {
     try {
       const result = await window.confirmationResult.confirm(otp);
-
       const otpUser = {
         name: result.user.phoneNumber,
         phone: result.user.phoneNumber,
@@ -81,26 +74,22 @@ export default function LoginRegister() {
         avatar: "",
         role: "user",
       };
-
       localStorage.setItem("user", JSON.stringify(otpUser));
       localStorage.setItem("token", result.user.uid);
-
       alert("Login Success");
-
       setPhone("");
       setOtp("");
-
       window.confirmationResult = null;
-
-      navigate("/profile");
-
+      if (otpUser.role === "provider") {
+        navigate("/provider-profile");
+      } else {
+        navigate("/profile");
+      }
     } catch (err) {
       console.log(err);
       alert("Invalid OTP");
     }
   };
-
-
 
   useEffect(() => { setTimeout(() => setShow(true), 80); }, []);
 
@@ -114,26 +103,24 @@ export default function LoginRegister() {
     setLoading(true);
     try {
       if (mode === "login") {
-        // ── REAL LOGIN ──────────────────────────────────────────────────────
         const data = await login(form.email, form.password);
+        console.log("LOGIN USER =", data.user);
+        console.log("ROLE =", data.user.role);
         setSuccess(`Welcome back, ${data.user.name}!`);
-        setTimeout(() => navigate("/"), 1000);
-
+        // Role-based redirect handled by useEffect
       } else {
-        // ── REAL REGISTER ───────────────────────────────────────────────────
         const data = await register({
           name: form.name,
           email: form.email,
           password: form.password,
           phone: form.phone,
           role: form.role,
-          // If registering as provider, pass these too:
           ...(form.role === "provider" && { category: "Home Cleaning", hourlyRate: 0 }),
         });
         setSuccess(`Account created! Welcome, ${data.user.name}!`);
         setTimeout(() => {
           if (data.user.role === "provider") navigate("/join-provider");
-          else navigate("/");
+          // else will redirect via useEffect
         }, 1000);
       }
     } catch (err) {
@@ -146,20 +133,19 @@ export default function LoginRegister() {
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
-
       const gUser = {
         name: result.user.displayName,
         email: result.user.email,
         avatar: result.user.photoURL,
         role: "user",
       };
-
       googleLogin(gUser);
-
       alert("Google Login Success");
-
-      navigate("/");
-
+      if (gUser.role === "provider") {
+        navigate("/provider-profile");
+      } else {
+        navigate("/profile");
+      }
     } catch (err) {
       console.log(err);
       alert("Google Login Failed");
@@ -247,67 +233,28 @@ export default function LoginRegister() {
 
             <div className="div-row"><div className="div-line" /><span className="div-t">or continue with</span><div className="div-line" /></div>
             <div className="social-auth">
-
-              {/* GOOGLE BUTTON */}
-              <button
-                className="google-btn"
-                onClick={handleGoogleLogin}
-              >
-                <img
-                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg"
-                  alt="google"
-                />
+              <button className="google-btn" onClick={handleGoogleLogin}>
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="google" />
                 Continue with Google
               </button>
 
-              {/* PHONE OTP */}
               <div className="otp-box">
-
-                {/* OPEN PHONE LOGIN */}
-
                 {!showPhoneAuth ? (
-
-                  <button
-                    className="phone-btn"
-                    onClick={() => setShowPhoneAuth(true)}
-                  >
+                  <button className="phone-btn" onClick={() => setShowPhoneAuth(true)}>
                     📱 Continue with Phone OTP
                   </button>
-
                 ) : (
-
                   <div className="otp-box show">
-
-                    <input
-                      type="text"
-                      placeholder="+91 Enter phone"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                    />
-
-                    <button onClick={sendOtp}>
-                      Send OTP
-                    </button>
-
+                    <input type="text" placeholder="+91 Enter phone" value={phone} onChange={(e) => setPhone(e.target.value)} />
+                    <button onClick={sendOtp}>Send OTP</button>
                     {otpSent && (
                       <>
-                        <input
-                          type="text"
-                          placeholder="Enter OTP"
-                          value={otp}
-                          onChange={(e) => setOtp(e.target.value)}
-                        />
-
-                        <button onClick={verifyOtp}>
-                          Verify OTP
-                        </button>
+                        <input type="text" placeholder="Enter OTP" value={otp} onChange={(e) => setOtp(e.target.value)} />
+                        <button onClick={verifyOtp}>Verify OTP</button>
                       </>
                     )}
-
                   </div>
-
                 )}
-
               </div>
             </div>
 

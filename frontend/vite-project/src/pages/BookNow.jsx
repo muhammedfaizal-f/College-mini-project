@@ -108,7 +108,7 @@ export default function BookNow() {
             s => s.provider?._id === p._id || s.provider === p._id
           );
           setServices(
-            (ownServices.length > 0 ? ownServices : rawServices).map(s => ({
+            ownServices.map(s => ({
               ...s,
               icon: catIcon(s.category),
             }))
@@ -151,7 +151,7 @@ export default function BookNow() {
             s => s.provider?._id === id || s.provider === id
           );
           setServices(
-            (ownServices.length > 0 ? ownServices : allServices).map(s => ({
+            ownServices.map(s => ({
               ...s,
               icon: catIcon(s.category),
             }))

@@ -35,6 +35,11 @@ export default function UserProfile() {
     // const { user, logout, updateUser } = useAuth();   // real auth
 
     const { user, logout } = useAuth();
+    useEffect(() => {
+        if (user?.role === "provider") {
+            navigate("/provider-profile");
+        }
+    }, [user, navigate]);
     const [bookings, setBookings] = useState(MOCK_BOOKINGS);
     const [activeTab, setActiveTab] = useState("Overview");
     const [loading, setLoading] = useState(false);
@@ -42,6 +47,8 @@ export default function UserProfile() {
     const [filterStat, setFilterStat] = useState("all");
     const [hovered, setHovered] = useState(null);
     const [imgError, setImgError] = useState(false);
+
+
 
     const [form, setForm] = useState({
         name: user?.name || "",
