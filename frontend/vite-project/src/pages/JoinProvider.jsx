@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './JoinProvider.css';
-
+import { authAPI, providerAPI } from "../api/services";
 
 const CATS = [
   { v: "Plumbing", icon: "🔧", c: "#4A90E2" }, { v: "Electrician", icon: "⚡", c: "#F59E0B" },
@@ -70,31 +70,65 @@ export default function JoinProvider() {
   };
 
   const submit = async () => {
-    const err = validate();
-    if (err) { setError(err); return; }
-    setLoading(true);
-    setError("");
-    try {
-      // REAL API — uncomment:
-      // await authAPI.register({
-      //   name:       form.name,
-      //   email:      form.email,
-      //   password:   form.password,
-      //   phone:      form.phone,
-      //   role:       "provider",
-      //   category:   form.category,
-      //   hourlyRate: Number(form.hourlyRate),
-      // });
+  const err = validate();
 
-      // Mock:
-      await new Promise(r => setTimeout(r, 1800));
-      setDone(true);
-    } catch (err) {
-      setError(err?.response?.data?.message || "Registration failed. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (err) {
+    setError(err);
+    return;
+  }
+
+  setLoading(true);
+  setError("");
+
+  try {
+    // Create provider account
+    const res = await authAPI.register({
+      name: form.name,
+      email: form.email,
+      password: form.password,
+      phone: form.phone,
+      role: "provider",
+      category: form.category,
+      hourlyRate: Number(form.hourlyRate),
+    });
+
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("user", JSON.stringify(res.data.user));
+
+    // Save remaining provider details
+    await providerAPI.updateMyProfile({
+      bio: form.bio,
+      skills: form.skills
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean),
+
+      experience: Number(form.experience),
+
+      location: {
+        address: form.address,
+        city: form.city,
+        pincode: form.pincode,
+      },
+
+      availableDays: form.days,
+
+      workingHours: {
+        start: form.startTime,
+        end: form.endTime,
+      },
+    });
+
+    setDone(true);
+  } catch (err) {
+    setError(
+      err?.response?.data?.message ||
+      "Registration failed."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
   return (
     <>
      <div className="jp">
