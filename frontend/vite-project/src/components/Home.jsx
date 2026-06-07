@@ -98,35 +98,29 @@ const home = () => {
               </div>
 
               <div className="search-divider" />
-              <div className="search-field" style={{ flex: "0 0 160px" }}>
-                <svg viewBox="0 0 24 24" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" /></svg>
+              <div className="city-select-wrap">
+                <svg
+                  className="city-icon"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                >
+                  <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+
                 <select
+                  className="city-select"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  style={{
-                    background: "transparent",
-                    border: "none",
-                    color: "white",
-                    width: "100%",
-                    outline: "none",
-                    fontSize: "15px"
-                  }}
                 >
-                  <option value="">Select City</option>
-
-                  {cities.map((city, index) => (
-                    <option
-                      key={index}
-                      value={city}
-                      style={{
-                        background: "#0b1020",
-                        color: "white"
-                      }}
-                    >
+                  {cities.map((city) => (
+                    <option key={city} value={city}>
                       {city}
                     </option>
                   ))}
                 </select>
+
+                
               </div>
               <button
                 className="btn-search"

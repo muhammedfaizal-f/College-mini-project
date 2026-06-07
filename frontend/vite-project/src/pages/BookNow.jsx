@@ -234,6 +234,8 @@ export default function BookNow() {
         paymentMethod: payment,
         userNotes: notes,
       };
+      console.log("selectedDate =", selectedDate);
+      console.log("selectedDate.full =", selectedDate?.full);
 
       console.log("Sending booking payload:", payload);
 
