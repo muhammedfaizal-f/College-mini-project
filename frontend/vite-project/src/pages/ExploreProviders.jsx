@@ -158,13 +158,13 @@ export default function ExploreProviders() {
   // ── Handle Book Now ───────────────────────────────────────────────────────
   // Pass full provider via navigate state so BookNow doesn't need another fetch
   const handleBook = (p) => {
-    setBooked(p._id);
-    setTimeout(() => {
-      navigate(`/book/${p._id}`, {
-        state: { provider: p._raw || p },  // send raw backend data
-      });
-    }, 500);
-  };
+  console.log("Provider object:", p);
+  console.log("Provider _id:", p._id);
+
+  navigate(`/book/${p._id}`, {
+    state: { provider: p._raw || p }
+  });
+};
 
   // ── Clear filters ─────────────────────────────────────────────────────────
   const clearFilters = () => {

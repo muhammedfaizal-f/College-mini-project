@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const providers = [
     {
-        _id: "1",
+        _id: "6a22cf267fd88b07f7a77843",
         name: "Ravi Kumar",
         role: "Master Plumber",
         location: "Gandhipuram, Coimbatore",
@@ -122,6 +122,7 @@ const providers = [
 ];
 
 const categories = ["All", "Plumbing", "Electrical", "Cleaning", "AC Repair", "Tutoring", "Carpentry"];
+
 
 const StarRating = ({ rating, color }) => {
     const full = Math.floor(rating);

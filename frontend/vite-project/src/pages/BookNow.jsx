@@ -70,9 +70,7 @@ export default function BookNow() {
       setLoading(true);
       setError("");
       try {
-        // ── A: Provider may already be passed via navigate(state) ──────────
-        // This happens when ExploreProviders/LocationSearch navigates here:
-        //   navigate(`/book/${p._id}`, { state: { provider: p } })
+
         if (location.state?.provider) {
           const p = location.state.provider;
 
@@ -104,9 +102,27 @@ export default function BookNow() {
           const rawServices = srvRes.data.services || [];
 
           // Filter to this provider's own services (by provider field)
-          const ownServices = rawServices.filter(
-            s => s.provider?._id === p._id || s.provider === p._id
-          );
+          console.log("Provider ID:", p._id);
+
+          rawServices.forEach((s) => {
+            console.log(
+              "Service:",
+              s.title,
+              "Provider:",
+              s.provider?._id || s.provider
+            );
+          });
+
+          console.log("Provider:", p);
+          console.log("Raw Services:", rawServices);
+
+          const ownServices = rawServices.filter((s) => {
+            const serviceProviderId =
+              s.provider?._id?.toString() ||
+              s.provider?.toString();
+
+            return serviceProviderId === p._id?.toString();
+          });
           setServices(
             ownServices.map(s => ({
               ...s,
