@@ -371,6 +371,17 @@ export default function UserProfile() {
                                                             Rate ⭐
                                                         </button>
                                                     )}
+                                                    {b.status === "completed" && b.isReviewed && (
+                                                        <button
+                                                            className="bk-action"
+                                                            style={{
+                                                                background: "#10B981",
+                                                                color: "#fff"
+                                                            }}
+                                                        >
+                                                            ⭐ Reviewed
+                                                        </button>
+                                                    )}
                                                     {["pending", "confirmed"].includes(b.status) && (
                                                         <button className="bk-action">Cancel</button>
                                                     )}
