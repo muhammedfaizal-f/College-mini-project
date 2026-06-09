@@ -43,7 +43,11 @@ export default function LocationSearch() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [query, setQuery] = useState(searchParams.get("q") || "");
+ const [query, setQuery] = useState(
+  searchParams.get("search") ||
+  searchParams.get("q") ||
+  ""
+);
   const [city, setCity] = useState(searchParams.get("city") || "Coimbatore");
   const [category, setCategory] = useState(searchParams.get("category") || "");
   const [results, setResults] = useState([]);
@@ -57,7 +61,7 @@ export default function LocationSearch() {
 
   const mapProvider = (p) => ({
     _id: p._id || p.id,
-    name: p.name,
+    name: p.user?.name || p.name || "Provider",
     role: p.role || p.title || p.category,
     loc:
       p.location?.city ||
@@ -65,8 +69,18 @@ export default function LocationSearch() {
       p.city ||
       city ||
       "Coimbatore",
-    rating: Number(p.rating || 0),
-    reviews: Number(p.reviews || p.reviewCount || 0),
+    rating: Number(
+      p.averageRating ||
+      p.rating ||
+      0
+    ),
+
+    reviews: Number(
+      p.totalReviews ||
+      p.reviewCount ||
+      p.reviews ||
+      0
+    ),
     price: Number(p.price || p.hourlyRate || 0),
     badge: p.badge || "Verified",
     bc: p.bc || "#10B981",
@@ -95,11 +109,11 @@ export default function LocationSearch() {
 
       try {
         const params = {};
-        if (nextQuery) params.q = nextQuery;
+        if (nextQuery) params.search = nextQuery;
         if (nextCity) params.city = nextCity;
         if (nextCategory) params.category = nextCategory;
         if (nextSort) params.sort = nextSort;
-        if (nextAvail) params.avail = "true";
+        if (nextAvail) params.isAvailable = "true";
 
         setSearchParams(params, { replace: true });
 

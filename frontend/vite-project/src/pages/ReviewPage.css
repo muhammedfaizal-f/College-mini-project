@@ -461,16 +461,32 @@ body {
 }
 
 .rv-sort {
-    background: rgba(255, 255, 255, .04);
-    border: 0.5px solid rgba(255, 255, 255, .09);
-    border-radius: 8px;
-    padding: 7px 10px;
-    color: rgba(255, 255, 255, .7);
-    font-size: 13px;
-    outline: none;
-    cursor: pointer;
-    font-family: 'DM Sans', sans-serif;
-    margin-left: auto;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 12px;
+  padding: 10px 14px;
+  color: #fff;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  outline: none;
+  min-width: 170px;
+  transition: all .25s ease;
+}
+
+.rv-sort:hover {
+  border-color: rgba(255,107,53,.4);
+}
+
+.rv-sort:focus {
+  border-color: #FF6B35;
+  box-shadow: 0 0 0 3px rgba(255,107,53,.15);
+}
+
+.rv-sort option {
+  background: #0B1437;
+  color: white;
+  padding: 10px;
 }
 
 /* review cards */

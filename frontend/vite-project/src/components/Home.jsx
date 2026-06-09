@@ -120,13 +120,13 @@ const home = () => {
                   ))}
                 </select>
 
-                
+
               </div>
               <button
                 className="btn-search"
                 onClick={() =>
                   navigate(
-                    `/search?q=${encodeURIComponent(search)}&city=${encodeURIComponent(location)}`
+                    `/search?search=${encodeURIComponent(search)}&city=${encodeURIComponent(location)}&category=${encodeURIComponent(search)}`
                   )
                 }
               ><svg viewBox="0 0 24 24" strokeWidth="2.5"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
