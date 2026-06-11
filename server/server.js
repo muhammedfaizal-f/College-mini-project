@@ -1,8 +1,8 @@
-const express  = require("express");
-const dotenv   = require("dotenv");
-const cors     = require("cors");
-const morgan   = require("morgan");
-const path     = require("path");
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const morgan = require("morgan");
+const path = require("path");
 require('dotenv').config()
 
 process.env.PORT        // → 5000
@@ -16,13 +16,13 @@ const connectDB = require("./config/db");
 connectDB();
 
 // ── Import routes ─────────────────────────────────────────────────────────────
-const authRoutes     = require("./routes/authRoutes");
-const userRoutes     = require("./routes/userRoutes");
+const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
 const providerRoutes = require("./routes/providerRoutes");
-const bookingRoutes  = require("./routes/bookingRoutes");
-const serviceRoutes  = require("./routes/serviceRoutes");
-const reviewRoutes   = require("./routes/reviewRoutes");
-const adminRoutes    = require("./routes/adminRoutes");
+const bookingRoutes = require("./routes/bookingRoutes");
+const serviceRoutes = require("./routes/serviceRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 // ── Import middleware ─────────────────────────────────────────────────────────
 const { notFound, errorHandler } = require("./middleware/errorMiddleware");
@@ -36,7 +36,7 @@ const app = express();
 app.use(
   cors({
     origin: process.env.CLIENT_URL || "http://localhost:5173", // Vite default port
-    methods:      ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
@@ -57,27 +57,27 @@ app.get("/", (req, res) => {
     success: true,
     message: "🚀 ServeNow API is running",
     version: "1.0.0",
-    env:     process.env.NODE_ENV,
+    env: process.env.NODE_ENV,
   });
 });
 
 app.get("/api/health", (req, res) => {
   res.json({
-    success:   true,
-    message:   "Server is healthy",
+    success: true,
+    message: "Server is healthy",
     timestamp: new Date().toISOString(),
-    uptime:    `${Math.floor(process.uptime())}s`,
+    uptime: `${Math.floor(process.uptime())}s`,
   });
 });
 
 // ── API Routes ────────────────────────────────────────────────────────────────
-app.use("/api/auth",      authRoutes);
-app.use("/api/users",     userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 app.use("/api/providers", providerRoutes);
-app.use("/api/bookings",  bookingRoutes);
-app.use("/api/services",  serviceRoutes);
-app.use("/api/reviews",   reviewRoutes);
-app.use("/api/admin",     adminRoutes);
+app.use("/api/bookings", bookingRoutes);
+app.use("/api/services", serviceRoutes);
+app.use("/api/reviews", reviewRoutes);
+app.use("/api/admin", adminRoutes);
 
 // ── Serve static uploads (profile photos, etc.) ───────────────────────────────
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
